@@ -32,11 +32,14 @@ const UserRouter = require("./routes/UserRoutes.js");
 const DriverRouter = require("./routes/DriverRoutes.js");
 const RouteRouter = require("./routes/RouteRoutes.js");
 
+
 app.use("/TrashBin",TrashBinRouter);
 app.use("/Pickup",PickupRouter);
 app.use("/Users",UserRouter);
 app.use("/Driver",DriverRouter);
 app.use("/Routek",RouteRouter);
+app.use("/User",UserRouter);
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is up and running on port number: ${PORT}`);

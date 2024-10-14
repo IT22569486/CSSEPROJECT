@@ -125,6 +125,17 @@ function NavBar() {
             <li className="nav-item">
               <NavLink
                 exact
+                to="/Users"  // New Route link
+                activeClassName="active"
+                className="nav-link"
+                onClick={closeMobileMenu}
+              >
+                Users
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                exact
                 to="/profile"
                 activeClassName="active"
                 className="nav-link"

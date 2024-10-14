@@ -19,6 +19,9 @@ import UpdateRoute from "./components/UpdateRoute";
 import AddDriver from "./components/AddDriver";
 import UpdateDriver from "./components/UpdateDriver";
 import HomePage from "./components/Homepage";
+import Users from "./components/Users.js";
+import AddUser from "./components/AddUser.js";
+import UpdateUser from "./components/UpdateUser.js";
 
 function App() {
   const { isLoading, error } = useAuth0();
@@ -34,6 +37,7 @@ function App() {
             {!error && isLoading && <p className="spinner-border text-primary">Loading...</p>}
             {!error && !isLoading && (
               <Routes>
+                <Route path="/" element={<HomePage />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/blog" element={<Blog />} />
                 <Route path="/contact" element={<Contact />} />
@@ -52,7 +56,12 @@ function App() {
                 <Route path="/adddriver" element={<AddDriver />} />
                 <Route path="/editdrive/:id" element={<UpdateDriver />} />
                 <Route path="/Homepage" element={<HomePage />} />
+                <Route path="/Users" element={<Users />} />
+                <Route path="/adduser" element={<AddUser />} />
+                <Route path="/edituser/:id" element={<UpdateUser />} />
               </Routes>
+
+
             )}
           </div>
         </main>
