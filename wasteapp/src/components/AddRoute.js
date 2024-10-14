@@ -1,7 +1,6 @@
-// src/components/AddRoute.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import MapSelector from "./MapSelector"; // Import the MapSelector component
+import MapSelector from "./MapSelector";
 
 const AddRoute = () => {
   const [drivers, setDrivers] = useState([]);
@@ -9,8 +8,8 @@ const AddRoute = () => {
   const [selectedDriver, setSelectedDriver] = useState("");
   const [selectedBins, setSelectedBins] = useState([]);
   const [routeName, setRouteName] = useState("");
-  const [startLocation, setStartLocation] = useState(null); // Start location as an array
-  const [endLocation, setEndLocation] = useState(null); // End location as an array
+  const [startLocation, setStartLocation] = useState(null);
+  const [endLocation, setEndLocation] = useState(null);
   const [optimizedPath, setOptimizedPath] = useState([]);
   const [totalDistance, setTotalDistance] = useState("");
 
@@ -33,11 +32,10 @@ const AddRoute = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Construct the new route object
     const newRoute = {
       driver: selectedDriver,
       wasteBins: selectedBins,
-      optimizedPath: optimizedPath,
+      optimizedPath,
       totalDistance: parseFloat(totalDistance),
       routeName,
       startLocation,
@@ -51,16 +49,6 @@ const AddRoute = () => {
       console.error("Error adding route:", error);
       alert("Failed to add route");
     }
-  };
-
-  // Function to handle start location selection
-  const handleStartSelect = (location) => {
-    setStartLocation(location);
-  };
-
-  // Function to handle end location selection
-  const handleEndSelect = (location) => {
-    setEndLocation(location);
   };
 
   return (
@@ -83,16 +71,16 @@ const AddRoute = () => {
             ))}
           </select>
         </div>
+
         <div className="mb-3">
           <label className="form-label">Waste Bins</label>
           <select
             className="form-select"
             multiple
             value={selectedBins}
-            onChange={(e) => {
-              const value = Array.from(e.target.selectedOptions, (option) => option.value);
-              setSelectedBins(value);
-            }}
+            onChange={(e) =>
+              setSelectedBins(Array.from(e.target.selectedOptions, (option) => option.value))
+            }
             required
           >
             {bins.map((bin) => (
@@ -101,8 +89,11 @@ const AddRoute = () => {
               </option>
             ))}
           </select>
-          <small className="form-text text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple bins.</small>
+          <small className="form-text text-muted">
+            Hold Ctrl (Windows) or Command (Mac) to select multiple bins.
+          </small>
         </div>
+
         <div className="mb-3">
           <label className="form-label">Route Name</label>
           <input
@@ -114,60 +105,22 @@ const AddRoute = () => {
           />
         </div>
 
-        {/* Map Selector for Start and End Locations */}
         <div className="mb-3">
           <label className="form-label">Select Start and End Locations</label>
-          <MapSelector onSelectStart={handleStartSelect} onSelectEnd={handleEndSelect} />
-          <small className="form-text text-muted">
-            Click on the map to select start and end locations.
-          </small>
+          <MapSelector
+  onSelectStart={setStartLocation}
+  onSelectEnd={setEndLocation}
+  onSelectPath={(path, distance) => {
+    setOptimizedPath(path); // Save optimized path
+    setTotalDistance(distance); // Save total distance
+  }}
+  bins={bins}
+/>
         </div>
 
-        {/* Display selected start and end locations */}
-        <div className="mb-3">
-          <label className="form-label">Start Location (lng, lat)</label>
-          <input
-            type="text"
-            className="form-control"
-            value={startLocation ? startLocation.join(", ") : ""}
-            readOnly
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">End Location (lng, lat)</label>
-          <input
-            type="text"
-            className="form-control"
-            value={endLocation ? endLocation.join(", ") : ""}
-            readOnly
-          />
-        </div>
-
-        <div className="mb-3">
-          <label className="form-label">Optimized Path (lng, lat array)</label>
-          <input
-            type="text"
-            className="form-control"
-            value={optimizedPath.join("; ")} // e.g., "lng1, lat1; lng2, lat2"
-            onChange={(e) => {
-              const path = e.target.value.split(";").map(coord => coord.split(",").map(Number));
-              setOptimizedPath(path);
-            }}
-            placeholder="e.g. lng1,lat1; lng2,lat2"
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label className="form-label">Total Distance (km)</label>
-          <input
-            type="number"
-            className="form-control"
-            value={totalDistance}
-            onChange={(e) => setTotalDistance(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">Add Route</button>
+        <button type="submit" className="btn btn-primary">
+          Add Route
+        </button>
       </form>
     </div>
   );
